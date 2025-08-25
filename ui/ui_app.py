@@ -96,6 +96,6 @@ st.caption(
     "Shaded confidence interval shown in the chart.\n"
 )
 st.caption(
-        "By: DataGuy69 (X: @data_guy69)"
+        "X: @data_guy69"
     )
 
