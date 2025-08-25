@@ -1,7 +1,18 @@
 import os
+import time
 import requests
 import streamlit as st
 from dotenv import load_dotenv
+
+def post_with_retry(url, json, tries=3, timeout=20):
+    last = None
+    for i in range(tries):
+        try:
+            return requests.post(url, json=json, headers={"User-Agent":"hp-ui/1.0"}, timeout=timeout)
+        except requests.exceptions.ReadTimeout as e:
+            last = e
+            time.sleep(1 + i)  # backoff
+    raise last
 
 load_dotenv()
 API_BASE = os.getenv("API_BASE_URL", "http://127.0.0.1:8000") 
@@ -40,7 +51,7 @@ with col_right:
     st.subheader(f"Curve — {map_choice}")
     # Prefer Datawrapper: request the iframe HTML from your API (returns HTML)
     try:
-        r = requests.get(f"{API_BASE}/plot_embed", params={"map": map_choice}, timeout=5)
+        r = requests.get(f"{API_BASE}/plot_embed", params={"map": map_choice}, timeout=20)
         if r.status_code == 200 and r.text.strip():
             st.components.v1.html(r.text, height=520, scrolling=False)
         else:
@@ -63,7 +74,8 @@ with col_left:
             "defense_score": float(defense_score),
         }
         try:
-            r = requests.post(f"{API_BASE}/predict", json=payload, timeout=5)
+            url = f"{API_BASE}/predict"
+            r = requests.post(f"{API_BASE}/predict", json=payload, timeout=20)
             if r.status_code == 200:
                 out = r.json()
                 p_att = float(out["p_team1"])
