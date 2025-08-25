@@ -102,14 +102,8 @@ with col_left:
         st.info("Enter scores and click **Predict Win %**.")
 
 # ---------- Footer ----------
-# st.divider()
-# st.caption(
-#     "Shaded CI shown in the chart (Datawrapper). Backend: FastAPI. "
-#     "Percentages are model outputs; interpret as win likelihood given current score and map."
-# )
 st.divider()
-st.caption(f"API_BASE_URL = {API_BASE}")  # should show https://hp-api-mlff.onrender.com
-url = f"{API_BASE}/predict"
-st.caption(f"Calling: {url}")
-r = requests.post(url, json=payload, headers={"User-Agent":"hp-ui/1.0"}, timeout=10)
-st.write({"status": r.status_code, "url": url, "text": r.text[:300]})
+st.caption(
+    "Shaded CI shown in the chart (Datawrapper). Backend: FastAPI. "
+    "Percentages are model outputs; interpret as win likelihood given current score and map."
+)
