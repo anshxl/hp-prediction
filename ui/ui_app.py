@@ -94,6 +94,8 @@ with col_left:
 st.divider()
 st.caption(
     "Shaded confidence interval shown in the chart.\n"
-    "By: DataGuy69 (X: @data_guy69)"
 )
+st.caption(
+        "By: DataGuy69 (X: @data_guy69)"
+    )
 
