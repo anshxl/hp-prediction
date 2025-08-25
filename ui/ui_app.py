@@ -23,15 +23,15 @@ map_choice = st.sidebar.selectbox("Select map", KNOWN_MAPS, index=0)
 
 # Scores input
 st.sidebar.subheader("Enter Scores")
-attack_score = st.sidebar.number_input("Attacking team score", min_value=0, value=100, step=1)
-defense_score = st.sidebar.number_input("Defending team score", min_value=0, value=95, step=1)
+attack_score = st.sidebar.number_input("Attacking Side (blue) score", min_value=0, value=100, step=1)
+defense_score = st.sidebar.number_input("Defending Side (yellow) score", min_value=0, value=95, step=1)
 
 # Predict button
 predict_btn = st.sidebar.button("Predict Win %", use_container_width=True)
 
 # ---------- Header ----------
-st.markdown("# 📈 Hardpoint — Win Probability")
-st.write("Model: logistic regression on **ScoreDiff_P4** with **Map** (calibrated).")
+st.markdown("# Hardpoint — Win Probability")
+st.write("Model: logistic regression on score after first set of hills, calibrated for each map.")
 
 # ---------- Layout: two columns ----------
 col_left, col_right = st.columns([0.45, 0.55], gap="large")
@@ -74,7 +74,7 @@ with col_left:
                 st.metric("Score Diff (Att - Def)", f"{diff:.1f}")
                 st.progress(min(max(p_att, 0.0), 1.0))
                 st.write(
-                    f"**Attacking:** {p_att*100:.1f}% | **Defending:** {p_def*100:.1f}%"
+                    f"**Blue:** {p_att*100:.1f}% | **Yellow:** {p_def*100:.1f}%"
                 )
                 # # Simple bar
                 # st.caption("Probability split")
@@ -91,14 +91,9 @@ with col_left:
         st.info("Enter scores and click **Predict Win %**.")
 
 # ---------- Footer ----------
-# st.divider()
-# st.caption(
-#     "Shaded CI shown in the chart (Datawrapper). Backend: FastAPI. "
-#     "Percentages are model outputs; interpret as win likelihood given current score and map."
-# )
 st.divider()
-st.caption(f"API_BASE_URL = {API_BASE}")  # should show https://hp-api-mlff.onrender.com
-url = f"{API_BASE}/predict"
-st.caption(f"Calling: {url}")
-r = requests.post(url, json=payload, headers={"User-Agent":"hp-ui/1.0"}, timeout=10)
-st.write({"status": r.status_code, "url": url, "text": r.text[:300]})
+st.caption(
+    "Shaded confidence interval shown in the chart."
+    "By: DataGuy69 (X @data_guy69)"
+)
+
