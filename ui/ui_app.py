@@ -4,16 +4,6 @@ import requests
 import streamlit as st
 from dotenv import load_dotenv
 
-def post_with_retry(url, json, tries=3, timeout=20):
-    last = None
-    for i in range(tries):
-        try:
-            return requests.post(url, json=json, headers={"User-Agent":"hp-ui/1.0"}, timeout=timeout)
-        except requests.exceptions.ReadTimeout as e:
-            last = e
-            time.sleep(1 + i)  # backoff
-    raise last
-
 load_dotenv()
 API_BASE = os.getenv("API_BASE_URL", "http://127.0.0.1:8000") 
 
@@ -74,7 +64,6 @@ with col_left:
             "defense_score": float(defense_score),
         }
         try:
-            url = f"{API_BASE}/predict"
             r = requests.post(f"{API_BASE}/predict", json=payload, timeout=20)
             if r.status_code == 200:
                 out = r.json()
@@ -102,8 +91,14 @@ with col_left:
         st.info("Enter scores and click **Predict Win %**.")
 
 # ---------- Footer ----------
+# st.divider()
+# st.caption(
+#     "Shaded CI shown in the chart (Datawrapper). Backend: FastAPI. "
+#     "Percentages are model outputs; interpret as win likelihood given current score and map."
+# )
 st.divider()
-st.caption(
-    "Shaded CI shown in the chart (Datawrapper). Backend: FastAPI. "
-    "Percentages are model outputs; interpret as win likelihood given current score and map."
-)
+st.caption(f"API_BASE_URL = {API_BASE}")  # should show https://hp-api-mlff.onrender.com
+url = f"{API_BASE}/predict"
+st.caption(f"Calling: {url}")
+r = requests.post(url, json=payload, headers={"User-Agent":"hp-ui/1.0"}, timeout=10)
+st.write({"status": r.status_code, "url": url, "text": r.text[:300]})
