@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: hp-api
+    env: python
+    plan: free
+    region: oregon
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 2"
+    envVars:
+      - key: MPLBACKEND
+        value: Agg
+      # optional: lock sklearn thread use if needed
+      - key: OMP_NUM_THREADS
+        value: "1"
+      - key: NUMEXPR_NUM_THREADS
+        value: "1"
+      - key: OPENBLAS_NUM_THREADS
+        value: "1"
+    autoDeploy: true
+
+  - type: web
+    name: hp-ui
+    env: python
+    plan: free
+    region: oregon
+    buildCommand: "pip install -r requirements-ui.txt"
+    startCommand: "streamlit run ui/ui_app.py --server.port $PORT --server.address 0.0.0.0"
+    envVars:
+      # Point UI to the API. After first deploy of hp-api, update this to the actual URL Render gives you.
+      - key: API_BASE_URL
+        value: "https://hp-api.onrender.com"
+    autoDeploy: true
