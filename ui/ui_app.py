@@ -93,7 +93,7 @@ with col_left:
 # ---------- Footer ----------
 st.divider()
 st.caption(
-    "Shaded confidence interval shown in the chart."
-    "By: DataGuy69 (X @data_guy69)"
+    "Shaded confidence interval shown in the chart.\n"
+    "By: DataGuy69 (X: @data_guy69)"
 )
 
