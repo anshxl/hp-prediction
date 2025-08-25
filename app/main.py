@@ -11,7 +11,7 @@ app = FastAPI(title="HP Win Probability API", version=MODEL_VERSION)
 # allow your UI origin(s); update once you know the Render URL
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # for quick start; tighten later to ["https://hp-ui.onrender.com"]
+    allow_origins=["https://hp-ui-4gyj.onrender.com"],  # for quick start; tighten later to ["https://hp-ui.onrender.com"]
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],

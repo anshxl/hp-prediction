@@ -4,7 +4,7 @@ import streamlit as st
 from dotenv import load_dotenv
 
 load_dotenv()
-API_BASE = os.getenv("API_BASE_URL", "http://127.0.0.1:8000")
+API_BASE = os.getenv("API_BASE_URL") or "https://hp-api-mlff.onrender.com"
 
 # ---- Replace with your real map list or expose a /maps endpoint on the API ----
 KNOWN_MAPS = [
