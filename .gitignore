@@ -1,0 +1,13 @@
+# venv
+venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+
+# Distribution / packaging
+.Python
+
+# DS_Store
+.DS_Store
